@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Epic Market</title>
+</head>
+
+<body>
+    <main>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow fixed-top">
+            <div class="container-fluid mx-5">
+                <a class="navbar-brand" href="#">
+                    <div class="d-flex align-items-center justify-content-center">
+                    <ion-icon id="nav-logo" class="fs-3 me-3" name="cube"></ion-icon> 
+                    <span>Epic Market</span>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <ul class="nav nav-pills" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#edit-products" type="button" role="tab" aria-controls="profile" aria-selected="false">Edit Products</button>
+                        </li>
+                      </ul>
+
+                </div>
+
+            </div>
+        </nav>
+
+        <div class="container my-padding-scroll">
+
+            <div class="tab-content" id="myTabContent">
+
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-2" id="products-gallery">
+
+                    </div>
+
+                </div>
+
+                <div class="tab-pane fade" id="edit-products" role="tabpanel" aria-labelledby="profile-tab">
+
+                    <div class="container mb-3">
+                        <div class="input-group mb-3">
+                            <input id="name-fld" type="text" class="form-control" placeholder="Product's Name..." aria-label="Product's Name..." aria-describedby="product's name">
+                            <input id="description-fld" type="text" class="form-control" placeholder="Description" aria-label="Description" aria-describedby="product's description">
+                            <input id="brand-fld" type="text" class="form-control" placeholder="Brand" aria-label="Brand" aria-describedby="product's brand">
+                            <input id="image-fld" type="text" class="form-control" placeholder="Image Url" aria-label="Image Url" aria-describedby="product's image">
+                            <input id="price-fld" type="text" class="form-control" placeholder="Price" aria-label="Price" aria-describedby="product's price">
+                            <button class="btn btn-outline-secondary" type="button" id="add-product-button">Add Product</button>
+                          </div>
+                    </div>
+
+                    <table class="table table-dark table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Options</th>
+                          </tr>
+                        </thead>
+                        <tbody id="edit-tab-body">
+                        </tbody>
+                      </table>
+                </div>
+
+              </div>
+
+
+        </div>
+
+
+
+
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
