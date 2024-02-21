@@ -10,8 +10,27 @@ const prodBrandField = document.getElementById("brand-fld");
 const prodImgField = document.getElementById("image-fld");
 const prodPriceField = document.getElementById("price-fld");
 const addProdBtn = document.getElementById("add-product-button");
+const loadingSpinner = document.getElementById("loading-spinner");
 
+const editFormModal = document.getElementById("edit-form-modal");
+const editName = document.getElementById("edit-name");
+const editBrand = document.getElementById("edit-brand");
+const editDescr = document.getElementById("edit-description");
+const editImg = document.getElementById("edit-img-url");
+const editPrice = document.getElementById("edit-price");
+
+const closeModalImg = document.querySelector(".btn-close");
+const closeModalBtn = document.getElementById("edit-close-btn");
+const savChangesBtn = document.getElementById("save-edit-btn");
+
+
+closeModalImg.addEventListener("click", closeModal);
+closeModalBtn.addEventListener("click", closeModal);
 addProdBtn.addEventListener("click", addProduct);
+savChangesBtn.addEventListener("click", ()=> { saveChanges(idProdToSave)} );
+
+let idProdToSave;
+
 syncProducts();
 
 async function addProduct() {
@@ -40,7 +59,8 @@ async function addProduct() {
 async function syncProducts() {
     editTabBody.innerHTML = "";
     prodsGallery.innerHTML = "";
-    
+    loadingSpinner.classList.toggle("d-none");
+
     try {
         const res = await fetch(apiUrl, { headers: { "Authorization": authToken } });
         const json = await res.json();
@@ -52,7 +72,7 @@ async function syncProducts() {
     } catch (error) {
         console.log(error);
     }
-
+    loadingSpinner.classList.toggle("d-none");
 };
 
 function createProductRow({ name, description, brand, price, _id }) {
@@ -77,6 +97,9 @@ function createProductRow({ name, description, brand, price, _id }) {
     editImg.setAttribute("name", "pencil")
 
     editBtn.appendChild(editImg);
+    editBtn.addEventListener("click", () => {
+        showModal(_id);
+    });
 
     // Tasto di cancellazione:
     let delBtn = document.createElement("a");
@@ -100,7 +123,7 @@ function createProductRow({ name, description, brand, price, _id }) {
     editTabBody.appendChild(tableRow);
 };
 
-function createProductCard({ name, imageUrl, price }) {
+function createProductCard({ name, imageUrl, price, _id }) {
 
     let cardContainer = document.createElement("div");
 
@@ -108,7 +131,7 @@ function createProductCard({ name, imageUrl, price }) {
     prodCard.classList.add("card", "shadow");
 
     let prodImg = document.createElement("img");
-    prodImg.classList.add("card-img-top");
+    prodImg.classList.add("card-img-top", "img-sizing");
     prodImg.src = imageUrl;
     prodImg.alt = name;
 
@@ -132,6 +155,7 @@ function createProductCard({ name, imageUrl, price }) {
     let prodShowBtn = document.createElement("a");
     prodShowBtn.classList.add("btn", "btn-warning", "btn-sm");
     prodShowBtn.innerText = "Show details";
+    prodShowBtn.href = `details.html?q=${_id}`;
 
     cardFooter.appendChild(priceTag);
     cardFooter.appendChild(prodShowBtn);
@@ -141,15 +165,18 @@ function createProductCard({ name, imageUrl, price }) {
     prodCard.appendChild(prodImg);
     prodCard.appendChild(cardBody);
     cardContainer.appendChild(prodCard);
-    
+
     prodsGallery.appendChild(cardContainer);
 };
 
 async function deleteProduct(_id) {
     try {
-        const res = await fetch(apiUrl + _id, { method: "DELETE", headers: { 
-            "Content-type": "application/json",
-            "Authorization": authToken } });
+        const res = await fetch(apiUrl + _id, {
+            method: "DELETE", headers: {
+                "Content-type": "application/json",
+                "Authorization": authToken
+            }
+        });
         if (res.ok) {
             syncProducts();
         } else {
@@ -159,4 +186,69 @@ async function deleteProduct(_id) {
     } catch (error) {
         console.log(error);
     }
+};
+
+async function showModal(_id) {
+    editFormModal.classList.add("show", "fade");
+    editFormModal.style.display = "block";
+
+    document.body.classList.toggle("modal-open");
+    const backDrop = document.createElement("div");
+    backDrop.classList.add("modal-backdrop", "fade", "show");
+    document.body.appendChild(backDrop);
+
+    idProdToSave = _id;
+
+    try {
+        const res = await fetch(apiUrl + _id, { headers: { "Authorization": authToken } });
+        const json = await res.json();
+
+        editName.value = json.name;
+        editBrand.value = json.brand;
+        editDescr.value = json.description;
+        editImg.value = json.imageUrl;
+        editPrice.value = json.price;
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+async function saveChanges(_id) {
+
+    try {
+        const savedProd = {
+            "name": editName.value,
+            "description": editDescr.value,
+            "brand": editBrand.value,
+            "imageUrl": editImg.value,
+            "price": editPrice.value
+        }
+
+        const res = await fetch(apiUrl + _id, {
+            method: "PUT", 
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": authToken
+            },
+            body: JSON.stringify(savedProd)
+        });
+        if (res.ok) {
+            syncProducts();
+            closeModal(); 
+        } else {
+            console.log("Errore durante il salvataggio delle modifiche");
+        }
+
+    } catch (error) {
+        console.log(error);
+    };
+};
+
+function closeModal() {
+    editFormModal.classList.remove("show", "fade");
+    editFormModal.style.display = "none";
+    document.body.classList.toggle("modal-open");
+    const backDrop = document.querySelector(".modal-backdrop");
+    backDrop.remove();
 };

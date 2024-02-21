@@ -14,15 +14,3 @@ body {
 #nav-logo {
     color: orange;
 }
-
-.my-padding-scroll {
-    padding-top: 100px;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-    background-color: orange;
-}
-
-img.img-sizing {
-    max-height: 340px;
-}
