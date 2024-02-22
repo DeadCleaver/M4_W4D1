@@ -150,6 +150,7 @@ function createProductCard({ name, imageUrl, price, _id }) {
 
     let prodName = document.createElement("h5");
     prodName.innerText = name;
+    prodName.classList.add("text-ellipsis");
 
     let cardFooter = document.createElement("div");
     cardFooter.classList.add("d-flex", "justify-content-between", "align-items-center", "pt-auto");
@@ -166,6 +167,7 @@ function createProductCard({ name, imageUrl, price, _id }) {
     prodShowBtn.classList.add("btn", "btn-warning", "btn-sm");
     prodShowBtn.innerText = "Show details";
     prodShowBtn.href = `details.html?q=${_id}`;
+    prodShowBtn.target = "_blank";
 
     cardFooter.appendChild(priceTag);
     cardFooter.appendChild(prodShowBtn);
@@ -226,15 +228,16 @@ async function showModal(_id) {
 
 async function saveChanges(_id) {
 
-    try {
-        const savedProd = {
-            "name": editName.value,
-            "description": editDescr.value,
-            "brand": editBrand.value,
-            "imageUrl": editImg.value,
-            "price": editPrice.value
-        }
+    const savedProd = {
+        "name": editName.value,
+        "description": editDescr.value,
+        "brand": editBrand.value,
+        "imageUrl": editImg.value,
+        "price": editPrice.value
+    }
 
+    try {
+        
         const res = await fetch(apiUrl + _id, {
             method: "PUT", 
             headers: {
