@@ -75,7 +75,7 @@ async function syncProducts() {
     loadingSpinner.classList.toggle("d-none");
 };
 
-function createProductRow({ name, description, brand, price, _id }) {
+function createProductRow({ name, description, brand, price, imageUrl, _id }) {
 
     let tableRow = document.createElement("tr");
 
@@ -88,13 +88,22 @@ function createProductRow({ name, description, brand, price, _id }) {
     let rowPrice = document.createElement("td");
     rowPrice.innerText = price;
 
+   // <img src="..." class="img-thumbnail" alt="..."></img>
+    let rowImg = document.createElement("td");
+    rowImg.classList.add("d-flex", "justify-content-center");
+
+    let rowImgThumb = document.createElement("img");
+    rowImgThumb.classList.add("img-thumbnail");
+    rowImgThumb.src = imageUrl;
+    rowImg.appendChild(rowImgThumb);
+
     let opsBtns = document.createElement("td");
 
     // Tasto di modifica:
     let editBtn = document.createElement("a");
     editBtn.classList.add("btn", "btn-warning", "btn-sm");
     let editImg = document.createElement("ion-icon");
-    editImg.setAttribute("name", "pencil")
+    editImg.setAttribute("name", "pencil");
 
     editBtn.appendChild(editImg);
     editBtn.addEventListener("click", () => {
@@ -118,6 +127,7 @@ function createProductRow({ name, description, brand, price, _id }) {
     tableRow.appendChild(rowDesc);
     tableRow.appendChild(rowBrand);
     tableRow.appendChild(rowPrice);
+    tableRow.appendChild(rowImg);
     tableRow.appendChild(opsBtns);
 
     editTabBody.appendChild(tableRow);
