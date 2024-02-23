@@ -1,3 +1,4 @@
+// dichiaro le variabili e le costanti, acchiappo gli elementi del dom generali
 const apiUrl = "https://striveschool-api.herokuapp.com/api/product/";
 const authToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWQ1MDEyZTljNDM3MDAwMTkzYzM3ZGQiLCJpYXQiOjE3MDg0NTgyODYsImV4cCI6MTcwOTY2Nzg4Nn0.1WmrZJX_BCGJ4WYUtFTFdUhrcOu2J0ryxgeFhlzWhfc"
 
@@ -32,13 +33,13 @@ savChangesBtn.addEventListener("click", ()=> { saveChanges(idProdToSave)} );
 
 let idProdToSave;
 
+//carico i prodotti sulla pagina edit e sulla galleria principale tutte insieme
 syncProducts();
 
+// funzione per aggiungere i prodotti
 async function addProduct() {
-    // Verifica di validazione:
 
     if (prodNameField.value && prodDescrField.value && prodBrandField.value && prodImgField.value && prodPriceField.value) {
-        // Acquisisco i valori degli input per l'aggiunta del nuovo prodotto:
         let newProduct = { "name": prodNameField.value, "description": prodDescrField.value, "brand": prodBrandField.value, "imageUrl": prodImgField.value, "price": prodPriceField.value };
 
         try {
@@ -64,6 +65,7 @@ async function addProduct() {
     }
 };
 
+// funzione generale per sincronizzare prodotti nella pagina edit e nella galleria, insieme
 async function syncProducts() {
     editTabBody.innerHTML = "";
     prodsGallery.innerHTML = "";
@@ -78,10 +80,12 @@ async function syncProducts() {
             createProductCard(product);
         });
     } catch (error) {
-        console.log(error);
+        alert(error);
     }
     loadingSpinner.classList.toggle("d-none");
 };
+
+//funzione per creare una row relativa al prodotto aggiunto con gli elementi DOM relativi
 
 function createProductRow({ name, description, brand, price, imageUrl, _id }) {
 
@@ -108,7 +112,7 @@ function createProductRow({ name, description, brand, price, imageUrl, _id }) {
 
     // Tasto di modifica:
     let editBtn = document.createElement("a");
-    editBtn.classList.add("btn", "btn-warning", "btn-sm");
+    editBtn.classList.add("btn", "btn-warning", "btn-sm", "m-2");
     let editImg = document.createElement("ion-icon");
     editImg.setAttribute("name", "pencil");
 
@@ -119,7 +123,7 @@ function createProductRow({ name, description, brand, price, imageUrl, _id }) {
 
     // Tasto di cancellazione:
     let delBtn = document.createElement("a");
-    delBtn.classList.add("btn", "btn-danger", "btn-sm", "ms-3");
+    delBtn.classList.add("btn", "btn-danger", "btn-sm", "m-2");
     let delImg = document.createElement("ion-icon");
     delImg.setAttribute("name", "trash-bin");
     delBtn.addEventListener("click", () => deleteProduct(_id));
@@ -140,6 +144,7 @@ function createProductRow({ name, description, brand, price, imageUrl, _id }) {
     editTabBody.appendChild(tableRow);
 };
 
+// funzione per creare elemento dom della card
 function createProductCard({ name, imageUrl, price, _id }) {
 
     let cardContainer = document.createElement("div");
@@ -188,8 +193,9 @@ function createProductCard({ name, imageUrl, price, _id }) {
     prodsGallery.appendChild(cardContainer);
 };
 
+//funzione per cancellare un prodotto dalla pagina edit
 async function deleteProduct(_id) {
-    const confirmation = confirm("sei sicuro di voler procedere alla cancellazione?");
+    const confirmation = confirm("sei sicuro di voler procedere alla cancellazione del prodotto?");
 
     if (confirmation) {
         try {
@@ -213,6 +219,7 @@ async function deleteProduct(_id) {
     };
 };
 
+//funzione per mostrare il modale, e valorizzarne i campi interni usando l'id del relativo eventlistener
 async function showModal(_id) {
     editFormModal.classList.add("show", "fade");
     editFormModal.style.display = "block";
@@ -239,7 +246,10 @@ async function showModal(_id) {
     }
 };
 
+//funzione per salvare le modifiche dalla pagina dal modale di edit
 async function saveChanges(_id) {
+
+    if (editName.value && editDescr.value && editBrand.value && editImg.value && editPrice.value) {
 
     const savedProd = {
         "name": editName.value,
@@ -269,8 +279,14 @@ async function saveChanges(_id) {
     } catch (error) {
         alert(error);
     };
+
+    } else {
+        alert("Devi inserire tutti e 5 i campi obbligatori");
+    }
+
 };
 
+//funzione per chiudere il modale
 function closeModal() {
     editFormModal.classList.remove("show", "fade");
     editFormModal.style.display = "none";
@@ -278,3 +294,4 @@ function closeModal() {
     const backDrop = document.querySelector(".modal-backdrop");
     backDrop.remove();
 };
+
