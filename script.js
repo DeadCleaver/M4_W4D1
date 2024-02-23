@@ -23,6 +23,7 @@ const closeModalImg = document.querySelector(".btn-close");
 const closeModalBtn = document.getElementById("edit-close-btn");
 const savChangesBtn = document.getElementById("save-edit-btn");
 
+const alertBody = document.getElementById("my-alert");
 
 closeModalImg.addEventListener("click", closeModal);
 closeModalBtn.addEventListener("click", closeModal);
@@ -52,7 +53,14 @@ async function addProduct() {
             console.log(error);
         }
     } else {
-        console.log("Devi inserire tutti e 5 i campi obbligatori!");
+        // console.log("Devi inserire tutti e 5 i campi obbligatori!");
+
+        alertBody.classList.toggle("d-none");
+
+        setTimeout(() => {
+           alertBody.classList.toggle("d-none");
+        }, 5000);
+
     }
 };
 
@@ -88,7 +96,6 @@ function createProductRow({ name, description, brand, price, imageUrl, _id }) {
     let rowPrice = document.createElement("td");
     rowPrice.innerText = price;
 
-   // <img src="..." class="img-thumbnail" alt="..."></img>
     let rowImg = document.createElement("td");
     rowImg.classList.add("d-flex", "justify-content-center");
 
@@ -182,22 +189,28 @@ function createProductCard({ name, imageUrl, price, _id }) {
 };
 
 async function deleteProduct(_id) {
-    try {
-        const res = await fetch(apiUrl + _id, {
-            method: "DELETE", headers: {
-                "Content-type": "application/json",
-                "Authorization": authToken
-            }
-        });
-        if (res.ok) {
-            syncProducts();
-        } else {
-            console.log("Errore durante la cancellazione del prodotto");
-        }
+    const confirmation = confirm("sei sicuro di voler procedere alla cancellazione?");
 
-    } catch (error) {
-        console.log(error);
-    }
+    if (confirmation) {
+        try {
+            const res = await fetch(apiUrl + _id, {
+                method: "DELETE", headers: {
+                    "Content-type": "application/json",
+                    "Authorization": authToken
+                }
+            });
+            if (res.ok) {
+                syncProducts();
+            } else {
+               alert("Errore durante la cancellazione del prodotto");
+            }
+    
+        } catch (error) {
+            alert(error);
+        }
+    } else {
+        alert("cancellazione annullata");
+    };
 };
 
 async function showModal(_id) {
@@ -222,7 +235,7 @@ async function showModal(_id) {
         editPrice.value = json.price;
 
     } catch (error) {
-        console.log(error);
+       alert(error);
     }
 };
 
@@ -250,11 +263,11 @@ async function saveChanges(_id) {
             syncProducts();
             closeModal(); 
         } else {
-            console.log("Errore durante il salvataggio delle modifiche");
+           alert("Errore durante il salvataggio delle modifiche");
         }
 
     } catch (error) {
-        console.log(error);
+        alert(error);
     };
 };
 
