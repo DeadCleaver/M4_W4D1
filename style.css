@@ -45,3 +45,7 @@ img.img-thumbnail {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.input-group-text {
+    width: 105px;
+}
