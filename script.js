@@ -4,6 +4,8 @@ const authToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWQ1M
 
 const editTabBody = document.getElementById("edit-tab-body");
 const prodsGallery = document.getElementById("products-gallery");
+const loadingSpinner = document.getElementById("loading-spinner");
+
 
 const prodNameField = document.getElementById("name-fld");
 const prodDescrField = document.getElementById("description-fld");
@@ -11,7 +13,14 @@ const prodBrandField = document.getElementById("brand-fld");
 const prodImgField = document.getElementById("image-fld");
 const prodPriceField = document.getElementById("price-fld");
 const addProdBtn = document.getElementById("add-product-button");
-const loadingSpinner = document.getElementById("loading-spinner");
+const clearAddProd = document.getElementById("clear-add-product");
+clearAddProd.addEventListener("click", () => {
+    prodNameField.value = "";
+    prodDescrField.value = "";
+    prodBrandField.value = "";
+    prodImgField.value = "";
+    prodPriceField.value = "";
+});
 
 const editFormModal = document.getElementById("edit-form-modal");
 const editName = document.getElementById("edit-name");
