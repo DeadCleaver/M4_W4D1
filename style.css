@@ -49,3 +49,7 @@ img.img-thumbnail {
 .input-group-text {
     width: 105px;
 }
+
+.form-select {
+    max-width: 8rem;
+}

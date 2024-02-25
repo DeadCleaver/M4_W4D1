@@ -44,7 +44,6 @@
     </nav>
 
 
-
     <div class="container my-padding-scroll">
 
       <div class="d-flex justify-content-center">
@@ -53,14 +52,29 @@
         </div>
       </div>
 
+      <!-- Sezione contenuto divisa in due tab -->
       <div class="tab-content" id="myTabContent">
 
+        <!-- tab HOME -->
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+          <div class="container my-3 border rounded">
+            <div class="input-group my-3">
+              <select class="form-select" id="search-type-select">
+                <option value="name">Name</option>
+                <option value="brand">Brand</option>
+              <input id="search-prod-field" type="text" class="form-control" placeholder="Search for a product..." aria-label="Recipient's username" aria-describedby="button-addon2">
+              <button class="btn btn-outline-success" type="button" id="search-prod-btn">Search</button>
+              <button class="btn btn-outline-danger btn-sm" type="button" id="clear-search-btn">Clear</button>
+            </div>
+          </div>
+
           <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5 g-3 g-md-2" id="products-gallery">
           </div>
 
         </div>
 
+        <!-- tab Admin -->
         <div class="tab-pane fade" id="edit-products" role="tabpanel" aria-labelledby="profile-tab">
 
           <!-- La prima versione dell'input form era bella da vedere, ma non sostenibile dal punto di vista della responsivity -->
@@ -187,6 +201,8 @@
         </div>
       </div>
     </div>
+
+    <!-- footer -->
 
     <footer class="bg-dark sticky-bottom mt-5 py-3">
       <div class="container">

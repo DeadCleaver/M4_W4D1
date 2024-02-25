@@ -2,10 +2,10 @@
 const apiUrl = "https://striveschool-api.herokuapp.com/api/product/";
 const authToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWQ1MDEyZTljNDM3MDAwMTkzYzM3ZGQiLCJpYXQiOjE3MDg0NTgyODYsImV4cCI6MTcwOTY2Nzg4Nn0.1WmrZJX_BCGJ4WYUtFTFdUhrcOu2J0ryxgeFhlzWhfc"
 
-const editTabBody = document.getElementById("edit-tab-body");
-const prodsGallery = document.getElementById("products-gallery");
 const loadingSpinner = document.getElementById("loading-spinner");
 
+const editTabBody = document.getElementById("edit-tab-body");
+const prodsGallery = document.getElementById("products-gallery");
 
 const prodNameField = document.getElementById("name-fld");
 const prodDescrField = document.getElementById("description-fld");
@@ -35,12 +35,20 @@ const savChangesBtn = document.getElementById("save-edit-btn");
 
 const alertBody = document.getElementById("my-alert");
 
+const searchTypeSelect = document.getElementById("search-type-select");
+const searchProdField = document.getElementById("search-prod-field");
+const searchProdBtn = document.getElementById("search-prod-btn");
+searchProdBtn.addEventListener("click", searchProd);
+const clearSearchBtn = document.getElementById("clear-search-btn");
+clearSearchBtn.addEventListener("click", clearSearch);
+
 closeModalImg.addEventListener("click", closeModal);
 closeModalBtn.addEventListener("click", closeModal);
 addProdBtn.addEventListener("click", addProduct);
 savChangesBtn.addEventListener("click", ()=> { saveChanges(idProdToSave)} );
 
 let idProdToSave;
+let prodArray = [];
 
 //carico i prodotti sulla pagina edit e sulla galleria principale tutte insieme
 syncProducts();
@@ -83,6 +91,9 @@ async function syncProducts() {
     try {
         const res = await fetch(apiUrl, { headers: { "Authorization": authToken } });
         const json = await res.json();
+        
+        prodArray = [];
+        prodArray.push(...json);
 
         json.forEach((product) => {
             createProductRow(product);
@@ -304,3 +315,32 @@ function closeModal() {
     backDrop.remove();
 };
 
+
+// funzione di ricerca per tipo, nella home
+function searchProd() {
+    const searchType = searchTypeSelect.value;
+    const searchField = searchProdField.value.toLowerCase().trim();
+
+    filteredProd = prodArray.filter(product => {
+        return product[searchType].toLowerCase().includes(searchField);
+    });
+
+    console.log(filteredProd);
+
+    if (filteredProd.length > 0) {
+        prodsGallery.innerHTML = "";
+
+        filteredProd.forEach((product) => {
+            createProductCard(product);
+        });
+    } else {
+        alert("Non è stato trovato alcun prodotto con i tuoi parametri di ricerca");
+    };
+
+};
+
+// funzione per cancellare i parametri di ricerca e resettare a home
+function clearSearch() {
+    searchProdField.value = "";
+    syncProducts();
+};
